@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .game-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+
+    input[type=number] {
+      padding: 10px;
+      width: 200px;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-container">
+    <h2>🎯 Guess the Number (1-100)</h2>
+    <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100" />
+    <br>
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p class="result" id="resultMessage"></p>
+    <p id="attempts"></p>
+    <p id="timeTaken"></p>
+  </div>
+
+  <script>
+    const randomNumber = Math.floor(Math.random() * 100) + 1;
+    let numOfGuesses = 0;
+    const startTime = new Date();
+
+    function checkGuess() {
+      const userGuess = parseInt(document.getElementById("guessInput").value);
+      const result = document.getElementById("resultMessage");
+      numOfGuesses++;
+
+      if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+        result.textContent = "⛔ Please enter a number between 1 and 100.";
+        return;
+      }
+
+      if (userGuess > randomNumber) {
+        result.textContent = "📉 Try a lower number!";
+      } else if (userGuess < randomNumber) {
+        result.textContent = "📈 Try a higher number!";
+      } else {
+        const endTime = new Date();
+        const timeTaken = Math.floor((endTime - startTime) / 1000);
+        result.textContent = "✅ Congratulations! You guessed it!";
+        document.getElementById("attempts").textContent = `Attempts: ${numOfGuesses}`;
+        document.getElementById("timeTaken").textContent = `Time taken: ${timeTaken} seconds`;
+        document.getElementById("guessInput").disabled = true;
+      }
+
+      document.getElementById("guessInput").value = '';
+      document.getElementById("guessInput").focus();
+    }
+  </script>
+
+</body>
+</html>
